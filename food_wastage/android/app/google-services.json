@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "251357511633",
+    "project_id": "waste-manager-cf6b0",
+    "storage_bucket": "waste-manager-cf6b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251357511633:android:e2bf3374199760a2686af0",
+        "android_client_info": {
+          "package_name": "com.waste.manager.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "251357511633-b0027gm7tt3ebhds685msgj2qlnrjacf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0BU431RLSVFDyR5DbkplH3la-SJ7_VTw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251357511633-b0027gm7tt3ebhds685msgj2qlnrjacf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "251357511633-tfq9effkai1bb524e4hkjr855i5lkgkq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.waste.manager.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
