@@ -4,11 +4,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/app_controller.dart';
+import '../../models/appuser.dart';
 import '../../models/products.dart';
 import '../../utils/constants.dart';
 import '../../utils/size_config.dart';
 import '../item_detail_screen/item_detail_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../welcome_screen/welcome_screen.dart';
 
 class ItemListScreen extends StatefulWidget {
 
@@ -37,6 +40,38 @@ class _ItemListScreenState extends State<ItemListScreen> {
     {
       setState(() {
         categoryProducts = result['CategoryProducts'];        
+      });
+    }
+    else
+    {
+      Constants.showDialog(result['ErrorMessage']);
+    }
+  }
+
+  void markProductFavorite(Product product, int index) async {
+    EasyLoading.show(status: 'Please wait', maskType: EasyLoadingMaskType.black,);
+    dynamic result = await AppController().addProductFavorite(product);
+    EasyLoading.dismiss();
+    if (result['Status'] == "Success") 
+    {
+      setState(() {
+        categoryProducts[index].favoriteCount = categoryProducts[index].favoriteCount +1;
+      });
+    }
+    else
+    {
+      Constants.showDialog(result['ErrorMessage']);
+    }
+  }
+
+  void removeProductFavorite(Product product, int index) async {
+    EasyLoading.show(status: 'Please wait', maskType: EasyLoadingMaskType.black,);
+    dynamic result = await AppController().removeProductFavorite(product);
+    EasyLoading.dismiss();
+    if (result['Status'] == "Success") 
+    {
+      setState(() {
+        categoryProducts[index].favoriteCount = categoryProducts[index].favoriteCount -1;
       });
     }
     else
@@ -93,10 +128,9 @@ class _ItemListScreenState extends State<ItemListScreen> {
   }
 
   Widget itemCell(Product product, int index){
-
     DateTime productDate = DateFormat('yyyy-MM-dd HH:mm:ss').parse(product.productAddedDate);
     String formattedDate = timeago.format(productDate);
-
+    bool isAlreadyFav = Constants.appUser.myFavorites.contains(product.productId);
     return GestureDetector(
       onTap: (){
         Get.to(ItemDetailScreen(product: product,));
@@ -158,7 +192,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
                     Container(
                       margin: EdgeInsets.only(top : SizeConfig.blockSizeVertical*0.7),
                       child: Text(
-                        '\$${product.productPrice}',
+                        '${product.productPrice}',
                         maxLines: 1,
                         style: TextStyle(
                           color: Colors.black,
@@ -173,7 +207,20 @@ class _ItemListScreenState extends State<ItemListScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Icon(Icons.favorite_border, size: SizeConfig.blockSizeVertical * 2.5, color: Colors.grey,),
+                          GestureDetector(
+                            onTap: (){
+                              if(AppUser.isGuestUser())
+                                Get.to(const WelcomeScreen());
+                              else
+                              {
+                                if(!isAlreadyFav)
+                                  markProductFavorite(product, index);
+                                else
+                                  removeProductFavorite(product, index);
+                              }
+                            },
+                            child: Icon((isAlreadyFav) ? Icons.favorite : Icons.favorite_border, size: SizeConfig.blockSizeVertical * 2.5, color: Colors.grey,)
+                          ),
                           Container(
                             margin: EdgeInsets.only(left : SizeConfig.blockSizeHorizontal*1),
                             child: Text(

@@ -29,7 +29,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Waste Manager would like to access your location to show you nearby item ads</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Waste Manager would like to access your gallery to select item picture</string>
+	<string>Waste Manager would like to access your gallery to select photo for product posting</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

@@ -19,8 +19,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.green),
+      ),
       body: Container(
-        margin: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal *7,  SizeConfig.blockSizeVertical *10,  SizeConfig.blockSizeHorizontal *7, 0),
+        margin: EdgeInsets.fromLTRB(SizeConfig.blockSizeHorizontal *7,  SizeConfig.blockSizeVertical *10-kToolbarHeight,  SizeConfig.blockSizeHorizontal *7, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,

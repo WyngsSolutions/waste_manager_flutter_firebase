@@ -9,6 +9,7 @@ import '../../models/appuser.dart';
 import '../../utils/constants.dart';
 import '../../utils/size_config.dart';
 import '../add_review/add_review.dart';
+import '../welcome_screen/welcome_screen.dart';
 
 class MyReviews extends StatefulWidget {
 
@@ -98,14 +99,19 @@ class _MyReviewsState extends State<MyReviews> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if(Constants.appUser.userId == widget.selectedUser.userId)
-          {
-            dynamic result = await Get.to(AddReviewScreen(selectedUser: widget.selectedUser,));
-            if(result != null)
-              getAllMyReviews();
-          }
+          if(AppUser.isGuestUser())
+            Get.to(const WelcomeScreen());
           else
-            Constants.showDialog('You cannot rate yourself');
+          {
+            if(Constants.appUser.userId == widget.selectedUser.userId)
+            {
+              dynamic result = await Get.to(AddReviewScreen(selectedUser: widget.selectedUser,));
+              if(result != null)
+                getAllMyReviews();
+            }
+            else
+              Constants.showDialog('You cannot rate yourself');
+          }
         },
         backgroundColor: Constants.appThemeColor,
         child: Icon(Icons.add),

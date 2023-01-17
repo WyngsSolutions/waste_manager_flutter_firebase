@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, curly_braces_in_flow_control_structures
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_wastage/models/appuser.dart';
-import 'package:food_wastage/screens/add_review/add_review.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:share/share.dart';
@@ -20,6 +18,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../chat_screen/chat_screen.dart';
 import '../user_reviews/user_reviews.dart';
 import '../vendor_profile/vendor_profile.dart';
+import '../welcome_screen/welcome_screen.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   
@@ -281,7 +280,12 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             ),
 
             GestureDetector(
-              onTap: showReportView,
+              onTap: (){
+                if(AppUser.isGuestUser())
+                  Get.to(const WelcomeScreen());
+                else
+                  showReportView();
+              },
               child: Container(
                 margin: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical *4),
                 padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeHorizontal*2, vertical: SizeConfig.blockSizeVertical * 3),
@@ -356,8 +360,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
             Spacer(),
             GestureDetector(
               onTap: () async {
-                AppUser user = await AppUser.getUserDetailByUserId(widget.product.productOwnerId);
-                Get.to(ChatScreen(chatUser: user,));
+                if(AppUser.isGuestUser())
+                  Get.to(const WelcomeScreen());
+                else
+                {
+                  AppUser user = await AppUser.getUserDetailByUserId(widget.product.productOwnerId);
+                  Get.to(ChatScreen(chatUser: user,));
+                }
               },
               child: Container(
                 height: SizeConfig.blockSizeVertical * 6,

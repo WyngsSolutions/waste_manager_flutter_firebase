@@ -108,6 +108,52 @@ class AppController {
       return setUpFailure();
     }
   }
+
+  Future signInGuest(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      print(userCredential.user!.uid);
+       AppUser newUser = AppUser(
+        userId: userCredential.user!.uid,
+        userEmail: email,
+        userName: '',
+      );
+      dynamic resultUser = await AppUser.getLoggedInUserDetail(newUser);
+      if (resultUser != null)
+      {
+        Map finalResponse = <dynamic, dynamic>{}; //empty map
+        finalResponse['Status'] = "Success";
+        finalResponse['User'] = resultUser;
+        Constants.appUser = resultUser;
+        //await Constants.appUser.saveUserDetails();
+        return finalResponse;
+      }
+      else 
+      {
+        Map finalResponse = <dynamic, dynamic>{}; //empty map
+        finalResponse['Error'] = "Error";
+        finalResponse['ErrorMessage'] = "User cannot login at this time. Try again later";
+        return finalResponse;
+      }
+    } on FirebaseAuthException catch (e) {
+      Map finalResponse = <dynamic, dynamic>{}; //empty map
+      finalResponse['Status'] = "Error";
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+        finalResponse['ErrorMessage'] = "The password provided is too weak.";
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+        finalResponse['ErrorMessage'] =
+            "The account already exists for that email";
+      } else {
+        finalResponse['ErrorMessage'] = e.code;
+      }
+      return finalResponse;
+    } catch (e) {
+      print(e.toString());
+      return setUpFailure();
+    }
+  }
   
   //FORGOT PASSWORD
   Future forgotPassword(String email) async {

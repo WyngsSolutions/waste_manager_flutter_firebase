@@ -1,5 +1,6 @@
 // ignore_for_file: curly_braces_in_flow_control_structures, avoid_print
 import 'package:flutter/material.dart';
+import 'package:food_wastage/controllers/app_controller.dart';
 import 'package:get/get.dart';
 import '../../models/appuser.dart';
 import '../../utils/constants.dart';
@@ -30,11 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> checkUserLoggedIn() async {
     Constants.appUser = await AppUser.getUserDetail();
     if(Constants.appUser.userEmail.isEmpty)
-      Get.offAll(const WelcomeScreen());
+    {
+      await AppController().signInGuest('guest@gmail.com', '12345678');
+      Get.offAll(const LocationPermissonScreen());
+      //Get.offAll(const WelcomeScreen());
+    }
     else //if(Constants.appUser.latitude ==0 || Constants.appUser.longitude ==0)
       Get.offAll(const LocationPermissonScreen());
-    // else 
-    //   Get.offAll(const HomeScreen(defaultPage: 0,));
   }
   
   @override

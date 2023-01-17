@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:food_wastage/models/appuser.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/app_controller.dart';
@@ -12,6 +13,7 @@ import '../item_detail_screen/item_detail_screen.dart';
 import '../search_screen/search_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../set_my_radius/set_my_radius.dart';
+import '../welcome_screen/welcome_screen.dart';
 
 class ListingScreen extends StatefulWidget {
   
@@ -236,10 +238,15 @@ class _ListingScreenState extends State<ListingScreen> {
                         children: [
                           GestureDetector(
                             onTap: (){
-                              if(!isAlreadyFav)
-                                markProductFavorite(product, index);
+                              if(AppUser.isGuestUser())
+                                Get.to(const WelcomeScreen());
                               else
-                                removeProductFavorite(product, index);
+                              {
+                                if(!isAlreadyFav)
+                                  markProductFavorite(product, index);
+                                else
+                                  removeProductFavorite(product, index);
+                              }
                             },
                             child: Icon((isAlreadyFav) ? Icons.favorite : Icons.favorite_border, size: SizeConfig.blockSizeVertical * 2.5, color: Colors.grey,)
                           ),

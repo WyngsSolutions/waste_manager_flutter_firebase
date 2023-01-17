@@ -201,4 +201,11 @@ class AppUser {
       return false;
     });
   }
+
+  static isGuestUser(){
+    if(Constants.appUser.userEmail == "guest@gmail.com")
+      return true;
+    else
+      return false;
+  }
 }

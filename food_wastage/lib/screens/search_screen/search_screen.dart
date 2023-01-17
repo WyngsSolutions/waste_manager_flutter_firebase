@@ -5,11 +5,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../controllers/app_controller.dart';
+import '../../models/appuser.dart';
 import '../../models/products.dart';
 import '../../utils/constants.dart';
 import '../../utils/size_config.dart';
 import '../item_detail_screen/item_detail_screen.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../welcome_screen/welcome_screen.dart';
 
 class SearchScreen extends StatefulWidget {
 
@@ -326,10 +329,15 @@ class _SearchScreenState extends State<SearchScreen> {
                         children: [
                           GestureDetector(
                             onTap: (){
-                              if(!isAlreadyFav)
-                                markProductFavorite(product, index);
+                              if(AppUser.isGuestUser())
+                                Get.to(const WelcomeScreen());
                               else
-                                removeProductFavorite(product, index);
+                              {
+                                if(!isAlreadyFav)
+                                  markProductFavorite(product, index);
+                                else
+                                  removeProductFavorite(product, index);
+                              }
                             },
                             child: Icon((isAlreadyFav) ? Icons.favorite : Icons.favorite_border, size: SizeConfig.blockSizeVertical * 2.5, color: Colors.grey,)
                           ),

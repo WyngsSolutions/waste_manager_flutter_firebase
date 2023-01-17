@@ -14,6 +14,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../chat_screen/chat_screen.dart';
 import '../item_detail_screen/item_detail_screen.dart';
 import '../user_reviews/user_reviews.dart';
+import '../welcome_screen/welcome_screen.dart';
 
 class VendorProfile extends StatefulWidget {
 
@@ -32,7 +33,7 @@ class _VendorProfileState extends State<VendorProfile> {
   @override
   void initState() {
     super.initState();
-    userImageUrl = Constants.appUser.userPicture;
+    userImageUrl = widget.user.userPicture;
     getMyListingProducts();
   }
 
@@ -205,7 +206,10 @@ class _VendorProfileState extends State<VendorProfile> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          Get.to(ChatScreen(chatUser: widget.user,));
+                          if(AppUser.isGuestUser())
+                            Get.to(const WelcomeScreen());
+                          else
+                            Get.to(ChatScreen(chatUser: widget.user,));
                         },
                         child: Container(
                           height: SizeConfig.blockSizeVertical *5,

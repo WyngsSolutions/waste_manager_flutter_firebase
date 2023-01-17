@@ -13,6 +13,7 @@ import '../chatlist_screen/chatlist_screen.dart';
 import '../listing_screen/listing_screen.dart';
 import '../my_profile/my_profile.dart';
 import '../post_screen/post_screen.dart';
+import '../welcome_screen/welcome_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -133,6 +134,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onTabTapped(int index) {
+
+    if(index>1 && AppUser.isGuestUser())
+    {
+      Get.to(const WelcomeScreen());
+      return;
+    }
+
     setState(() {
       _pageIndex = index;
     });
